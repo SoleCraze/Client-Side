@@ -1,5 +1,11 @@
 import "./productView.scss";
-import { Slider } from "infinite-react-carousel/lib";
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Navigation, Pagination, Thumbs, FreeMode } from 'swiper/modules';
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
+import 'swiper/css/thumbs';
+import 'swiper/css/free-mode';
 import Newsletter from "../../components/newsletter/newsletter";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useMutation, useQuery } from '@tanstack/react-query';
@@ -23,6 +29,7 @@ const Product = () => {
   const [productsAtCart, setProductsAtCart] = useState([]);
   const [isFavorite, setIsFavorite] = useState(false);
   const [activeImageIndex, setActiveImageIndex] = useState(0);
+  const [thumbsSwiper, setThumbsSwiper] = useState(null);
   const currentUser = JSON.parse(localStorage.getItem("currentUser"));
 
   const navigate = useNavigate();
@@ -138,27 +145,48 @@ const Product = () => {
           <div className="product-wrapper">
             <div className="image-section">
               <div className="main-image">
-                <Slider 
-                  slidesToShow={1} 
-                  arrowsScroll={1} 
-                  className="product-slider"
-                  beforeChange={(current, next) => setActiveImageIndex(next)}
+                <Swiper
+                  modules={[Navigation, Pagination, Thumbs]}
+                  spaceBetween={10}
+                  slidesPerView={1}
+                  navigation={true}
+                  pagination={{ 
+                    clickable: true,
+                    dynamicBullets: true 
+                  }}
+                  thumbs={{ swiper: thumbsSwiper && !thumbsSwiper.destroyed ? thumbsSwiper : null }}
+                  onSlideChange={(swiper) => setActiveImageIndex(swiper.activeIndex)}
+                  className="product-main-swiper"
                 >
                   {data?.imgs?.map((img, index) => (
-                    <div key={index} className="slide-container">
-                      <img src={img} alt={`${data.title} - View ${index + 1}`} />
-                    </div>
+                    <SwiperSlide key={index}>
+                      <div className="slide-container">
+                        <img src={img} alt={`${data.title} - View ${index + 1}`} />
+                      </div>
+                    </SwiperSlide>
                   ))}
-                </Slider>
-                
-                <div className="image-indicators">
-                  {data?.imgs?.map((_, index) => (
-                    <div 
-                      key={index}
-                      className={`indicator ${activeImageIndex === index ? 'active' : ''}`}
-                    />
-                  ))}
-                </div>
+                </Swiper>
+
+                {/* Thumbnail Swiper */}
+                {data?.imgs?.length > 1 && (
+                  <Swiper
+                    modules={[FreeMode, Thumbs]}
+                    onSwiper={setThumbsSwiper}
+                    spaceBetween={10}
+                    slidesPerView={4}
+                    freeMode={true}
+                    watchSlidesProgress={true}
+                    className="product-thumbs-swiper"
+                  >
+                    {data?.imgs?.map((img, index) => (
+                      <SwiperSlide key={index}>
+                        <div className="thumb-container">
+                          <img src={img} alt={`${data.title} - Thumbnail ${index + 1}`} />
+                        </div>
+                      </SwiperSlide>
+                    ))}
+                  </Swiper>
+                )}
               </div>
 
               <div className="product-features">

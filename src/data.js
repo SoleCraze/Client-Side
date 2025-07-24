@@ -12,7 +12,7 @@ export const sliderItems = [
       id: 1,
       img: img4,
       title: "SUMMER SALE",
-      desc: "DON'T COMPROMISE ON STYLE! GET FLAT 30% OFF FOR NEW ARRIVALS.",
+      desc: "DON'T Near ON STYLE! GET FLAT 30% OFF FOR NEW ARRIVALS.",
       bg: "EEF5FF",
     },
     {
