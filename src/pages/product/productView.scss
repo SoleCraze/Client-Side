@@ -1,11 +1,16 @@
 .product-page {
   background: var(--color-white);
   min-height: 100vh;
+  overflow-x: hidden;
+  width: 100%;
 }
 
 .productView {
   background: var(--color-white);
   padding: 40px 0;
+  overflow-x: hidden;
+  width: 100%;
+  max-width: 100vw;
 
   .loading-container, .error-container {
     display: flex;
@@ -58,6 +63,9 @@
     max-width: 1400px;
     margin: 0 auto;
     padding: 0 20px;
+    overflow-x: hidden;
+    width: 100%;
+    box-sizing: border-box;
 
     .breadcrumb {
       display: flex;
@@ -98,6 +106,9 @@
       grid-template-columns: 1fr 1fr;
       gap: 80px;
       margin-bottom: 80px;
+      overflow-x: hidden;
+      width: 100%;
+      max-width: 100%;
 
       @media (max-width: 1024px) {
         grid-template-columns: 1fr;
@@ -105,31 +116,45 @@
       }
 
       .image-section {
+        overflow-x: hidden;
+        width: 100%;
+        max-width: 100%;
+        
         .main-image {
           position: relative;
           background: var(--color-white);
           border-radius: 20px;
           overflow: hidden;
           box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+          width: 100%;
+          max-width: 100%;
 
           // Swiper Main Slider
           .product-main-swiper {
             width: 100%;
+            max-width: 100%;
             height: 500px;
             border-radius: 16px;
             overflow: hidden;
+            position: relative;
+            
+            .swiper-wrapper {
+              display: flex;
+              align-items: center;
+              width: 100%;
+            }
             
             .swiper-slide {
               display: flex;
               justify-content: center;
               align-items: center;
+              background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
               
               .slide-container {
                 display: flex;
                 justify-content: center;
                 align-items: center;
                 padding: 40px;
-                background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
                 width: 100%;
                 height: 100%;
 
@@ -137,6 +162,7 @@
                   width: 100%;
                   max-width: 400px;
                   height: auto;
+                  max-height: 420px;
                   object-fit: contain;
                   transition: transform 0.3s ease;
 
@@ -150,40 +176,51 @@
             // Swiper navigation buttons
             .swiper-button-next,
             .swiper-button-prev {
-              color: var(--color-black);
-              background: rgba(255, 255, 255, 0.9);
-              width: 40px;
-              height: 40px;
-              border-radius: 50%;
-              box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-              transition: all 0.3s ease;
+              color: var(--color-black) !important;
+              background: rgba(255, 255, 255, 0.9) !important;
+              width: 40px !important;
+              height: 40px !important;
+              margin-top: -20px !important;
+              border-radius: 50% !important;
+              box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+              transition: all 0.3s ease !important;
 
               &:after {
-                font-size: 16px;
-                font-weight: 600;
+                font-size: 16px !important;
+                font-weight: 600 !important;
               }
 
               &:hover {
-                background: var(--color-black);
-                color: var(--color-white);
-                transform: scale(1.1);
+                background: var(--color-black) !important;
+                color: var(--color-white) !important;
+                transform: scale(1.1) !important;
               }
+            }
+
+            .swiper-button-prev {
+              left: 15px !important;
+            }
+
+            .swiper-button-next {
+              right: 15px !important;
             }
 
             // Swiper pagination
             .swiper-pagination {
-              bottom: 20px;
+              bottom: 20px !important;
+              position: absolute !important;
 
               .swiper-pagination-bullet {
-                background: rgba(255, 255, 255, 0.5);
-                width: 8px;
-                height: 8px;
-                opacity: 1;
-                transition: all 0.3s ease;
+                background: rgba(255, 255, 255, 0.5) !important;
+                width: 8px !important;
+                height: 8px !important;
+                opacity: 1 !important;
+                transition: all 0.3s ease !important;
+                margin: 0 4px !important;
 
                 &.swiper-pagination-bullet-active {
-                  background: var(--color-black);
-                  transform: scale(1.2);
+                  background: var(--color-black) !important;
+                  transform: scale(1.2) !important;
                 }
               }
             }
@@ -193,6 +230,14 @@
           .product-thumbs-swiper {
             margin-top: 20px;
             height: 100px;
+            width: 100%;
+            max-width: 100%;
+            overflow: hidden;
+
+            .swiper-wrapper {
+              display: flex;
+              width: 100%;
+            }
 
             .swiper-slide {
               opacity: 0.6;
@@ -200,10 +245,11 @@
               border-radius: 12px;
               overflow: hidden;
               transition: all 0.3s ease;
+              height: 100px;
 
               &.swiper-slide-thumb-active {
-                opacity: 1;
-                border: 2px solid var(--color-black);
+                opacity: 1 !important;
+                border: 2px solid var(--color-black) !important;
               }
 
               .thumb-container {
@@ -226,6 +272,92 @@
                 opacity: 1;
                 transform: translateY(-2px);
                 box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+              }
+            }
+          }
+
+          // Responsive styles for Swiper
+          @media (max-width: 768px) {
+            .product-main-swiper {
+              height: 400px;
+
+              .swiper-slide {
+                .slide-container {
+                  padding: 20px;
+
+                  img {
+                    max-width: 300px;
+                  }
+                }
+              }
+
+              .swiper-button-next,
+              .swiper-button-prev {
+                width: 35px !important;
+                height: 35px !important;
+                margin-top: -17.5px !important;
+
+                &:after {
+                  font-size: 14px !important;
+                }
+              }
+            }
+
+            .product-thumbs-swiper {
+              height: 80px;
+
+              .swiper-slide {
+                height: 80px;
+              }
+            }
+          }
+
+          @media (max-width: 480px) {
+            .product-main-swiper {
+              height: 350px;
+
+              .swiper-button-next,
+              .swiper-button-prev {
+                display: none !important;
+              }
+            }
+
+            .product-thumbs-swiper {
+              height: 70px;
+
+              .swiper-slide {
+                height: 70px;
+              }
+            }
+          }
+
+          // Additional responsive fixes
+          @media (max-width: 1024px) {
+            .product-main-swiper {
+              height: 450px;
+            }
+          }
+
+          @media (max-width: 640px) {
+            .product-main-swiper {
+              height: 320px;
+              
+              .swiper-slide {
+                .slide-container {
+                  padding: 15px;
+
+                  img {
+                    max-width: 250px;
+                  }
+                }
+              }
+            }
+
+            .product-thumbs-swiper {
+              height: 60px;
+
+              .swiper-slide {
+                height: 60px;
               }
             }
           }
@@ -262,6 +394,10 @@
 
       .product-info {
         padding: 20px 0;
+        overflow-x: hidden;
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
 
         .product-header {
           display: flex;
@@ -639,7 +775,7 @@
     }
 
     .reviews-section {
-      padding: 40px 0;
+      padding: 40px 40px;
       border-top: 1px solid rgba(168, 168, 168, 0.1);
     }
   }

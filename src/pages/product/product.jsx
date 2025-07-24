@@ -54,6 +54,13 @@ const Product = () => {
   const handleCart = (e) => {
     e.preventDefault();
     
+    // Check if user is signed in
+    if (!currentUser) {
+      alert("Please sign in to add items to cart");
+      navigate("/login");
+      return;
+    }
+    
     if (!selectedSize) {
       alert("Please select a size before adding to cart");
       return;
@@ -149,14 +156,21 @@ const Product = () => {
                   modules={[Navigation, Pagination, Thumbs]}
                   spaceBetween={10}
                   slidesPerView={1}
-                  navigation={true}
+                  navigation={{
+                    nextEl: '.swiper-button-next',
+                    prevEl: '.swiper-button-prev',
+                  }}
                   pagination={{ 
                     clickable: true,
-                    dynamicBullets: true 
+                    dynamicBullets: true,
+                    el: '.swiper-pagination'
                   }}
-                  thumbs={{ swiper: thumbsSwiper && !thumbsSwiper.destroyed ? thumbsSwiper : null }}
+                  thumbs={{ 
+                    swiper: thumbsSwiper && !thumbsSwiper.destroyed ? thumbsSwiper : null 
+                  }}
                   onSlideChange={(swiper) => setActiveImageIndex(swiper.activeIndex)}
                   className="product-main-swiper"
+                  loop={data?.imgs?.length > 1}
                 >
                   {data?.imgs?.map((img, index) => (
                     <SwiperSlide key={index}>
@@ -177,6 +191,20 @@ const Product = () => {
                     freeMode={true}
                     watchSlidesProgress={true}
                     className="product-thumbs-swiper"
+                    breakpoints={{
+                      320: {
+                        slidesPerView: 2,
+                        spaceBetween: 10
+                      },
+                      480: {
+                        slidesPerView: 3,
+                        spaceBetween: 10
+                      },
+                      768: {
+                        slidesPerView: 4,
+                        spaceBetween: 10
+                      }
+                    }}
                   >
                     {data?.imgs?.map((img, index) => (
                       <SwiperSlide key={index}>

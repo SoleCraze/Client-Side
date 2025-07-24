@@ -18,6 +18,7 @@ const Navbar = () => {
   const [open, setOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [userDropdownOpen, setUserDropdownOpen] = useState(false);
+  const [dropdownPosition, setDropdownPosition] = useState({ top: 0, right: 0 });
 
   const handleLogout = async () => {
     try {
@@ -40,7 +41,9 @@ const Navbar = () => {
     };
 
     const handleClickOutside = (event) => {
-      if (!event.target.closest('.navbar')) {
+      if (!event.target.closest('.user-menu') && 
+          !event.target.closest('.mobile-menu-overlay') && 
+          !event.target.closest('.user-dropdown-options')) {
         setMobileMenuOpen(false);
         setUserDropdownOpen(false);
         setOpen(false);
@@ -65,8 +68,21 @@ const Navbar = () => {
 
   const toggleUserDropdown = (e) => {
     e.stopPropagation();
+    
+    if (!userDropdownOpen) {
+      // Calculate position based on user element
+      const userElement = e.currentTarget;
+      const rect = userElement.getBoundingClientRect();
+      const windowWidth = window.innerWidth;
+      
+      setDropdownPosition({
+        top: rect.bottom + 8,
+        right: windowWidth - rect.right
+      });
+    }
+    
     setUserDropdownOpen(!userDropdownOpen);
-    setOpen(!open);
+    setOpen(!userDropdownOpen);
   };
 
   const closeMobileMenu = () => {
@@ -149,22 +165,6 @@ const Navbar = () => {
                       <div className="user" onClick={toggleUserDropdown}>
                         <img src="/img/noavatar.jpg" alt="User Avatar" />
                         <span className="user-name">{currentUser?.firstName}</span>
-                        {open && (
-                          <div className="dropdown-options">
-                            <Link className="link dropdown-item" to="/myAccount">
-                              <PersonIcon className="dropdown-icon" />
-                              <span>My Account</span>
-                            </Link>
-                            <Link className="link dropdown-item" to="/orders">
-                              <ShoppingBagIcon className="dropdown-icon" />
-                              <span>My Orders</span>
-                            </Link>
-                            <div className="link dropdown-item logout" onClick={handleLogout}>
-                              <LogoutIcon className="dropdown-icon" />
-                              <span>Logout</span>
-                            </div>
-                          </div>
-                        )}
                       </div>
                     </div>
                   )}
@@ -196,6 +196,29 @@ const Navbar = () => {
           </div>
         </div>
       </div>
+
+      {/* User Dropdown - Outside navbar to prevent height issues */}
+      {userDropdownOpen && currentUser && (
+        <div className="user-dropdown-options" style={{
+          position: 'fixed',
+          top: `${dropdownPosition.top}px`,
+          right: `${dropdownPosition.right}px`,
+          zIndex: 10002
+        }}>
+          <Link className="link dropdown-item" to="/myAccount" onClick={closeMobileMenu}>
+            <PersonIcon className="dropdown-icon" />
+            <span>My Account</span>
+          </Link>
+          <Link className="link dropdown-item" to="/orders" onClick={closeMobileMenu}>
+            <ShoppingBagIcon className="dropdown-icon" />
+            <span>My Orders</span>
+          </Link>
+          <div className="link dropdown-item logout" onClick={handleLogout}>
+            <LogoutIcon className="dropdown-icon" />
+            <span>Logout</span>
+          </div>
+        </div>
+      )}
 
       {/* Mobile Menu Overlay - Outside navbar container */}
       <div className={`mobile-menu-overlay ${mobileMenuOpen ? 'active' : ''}`}>

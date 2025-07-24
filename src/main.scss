@@ -25,12 +25,16 @@ html {
   color: var(--color-black);
   background-color: var(--color-white);
   line-height: 1.6;
+  overflow-x: hidden;
+  max-width: 100vw;
 }
 
 body {
   font-family: var(--font-body);
   color: var(--color-black);
   background-color: var(--color-white);
+  overflow-x: hidden;
+  max-width: 100vw;
   font-weight: 400;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
