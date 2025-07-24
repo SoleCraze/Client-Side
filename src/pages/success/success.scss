@@ -1,0 +1,360 @@
+.success-page {
+  min-height: 100vh;
+  background: linear-gradient(135deg, rgba(248, 248, 248, 0.1) 0%, rgba(248, 248, 248, 0.05) 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 0;
+
+  .container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 0 2rem;
+
+    .success-card {
+      background: var(--color-white);
+      border-radius: 20px;
+      padding: 3rem;
+      box-shadow: 0 8px 32px rgba(11, 11, 11, 0.12);
+      border: 1px solid rgba(168, 168, 168, 0.1);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+
+      &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(90deg, #4caf50, #45a049);
+      }
+
+      .success-animation {
+        margin-bottom: 2rem;
+        position: relative;
+        display: inline-block;
+
+        .checkmark-wrapper {
+          position: relative;
+          display: inline-block;
+
+          .checkmark-icon {
+            font-size: 5rem;
+            color: #4caf50;
+            animation: checkmarkPop 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
+            filter: drop-shadow(0 4px 12px rgba(76, 175, 80, 0.3));
+          }
+
+          .success-ripple {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 100px;
+            height: 100px;
+            border: 2px solid #4caf50;
+            border-radius: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            opacity: 0;
+            animation: ripple 1.5s ease-out 0.3s forwards;
+          }
+        }
+      }
+
+      .success-content {
+        margin-bottom: 2rem;
+
+        h1 {
+          font-family: var(--font-heading);
+          font-size: 2.5rem;
+          font-weight: 700;
+          color: var(--color-black);
+          margin: 0 0 1rem 0;
+          animation: slideUp 0.8s ease-out 0.2s both;
+        }
+
+        .success-message {
+          font-family: var(--font-body);
+          font-size: 1.1rem;
+          color: var(--color-gray);
+          line-height: 1.6;
+          margin: 0 0 2rem 0;
+          animation: slideUp 0.8s ease-out 0.4s both;
+        }
+
+        .order-details {
+          display: flex;
+          flex-direction: column;
+          gap: 1rem;
+          margin-bottom: 2rem;
+          padding: 1.5rem;
+          background: rgba(248, 248, 248, 0.8);
+          backdrop-filter: blur(10px);
+          border-radius: 12px;
+          border: 1px solid rgba(168, 168, 168, 0.2);
+          animation: slideUp 0.8s ease-out 0.6s both;
+
+          .detail-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            justify-content: center;
+
+            .detail-icon {
+              color: #4caf50;
+              font-size: 1.25rem;
+            }
+
+            span {
+              font-family: var(--font-body);
+              font-size: 0.95rem;
+              color: var(--color-black);
+              font-weight: 500;
+            }
+          }
+        }
+
+        .processing-state {
+          animation: slideUp 0.8s ease-out 0.8s both;
+
+          .processing-spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid rgba(76, 175, 80, 0.2);
+            border-top: 3px solid #4caf50;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+          }
+
+          p {
+            font-family: var(--font-body);
+            color: var(--color-gray);
+            margin: 0;
+            font-size: 1rem;
+          }
+        }
+
+        .redirect-section {
+          animation: slideUp 0.8s ease-out 0.8s both;
+
+          .countdown-display {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 1rem;
+            background: rgba(76, 175, 80, 0.1);
+            border: 1px solid rgba(76, 175, 80, 0.2);
+            border-radius: 12px;
+            margin-bottom: 2rem;
+
+            .countdown-icon {
+              color: #4caf50;
+              font-size: 1.25rem;
+              animation: pulse 2s infinite;
+            }
+
+            span {
+              font-family: var(--font-body);
+              font-size: 1rem;
+              color: #2e7d32;
+              font-weight: 600;
+            }
+          }
+
+          .action-buttons {
+            display: flex;
+            gap: 1rem;
+
+            .view-orders-btn, .continue-shopping-btn {
+              flex: 1;
+              padding: 1rem 2rem;
+              border-radius: 12px;
+              font-family: var(--font-body);
+              font-size: 1rem;
+              font-weight: 600;
+              cursor: pointer;
+              transition: all 0.3s ease;
+              border: none;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              gap: 0.5rem;
+
+              .MuiSvgIcon-root {
+                font-size: 1.25rem;
+              }
+            }
+
+            .view-orders-btn {
+              background: var(--color-black);
+              color: var(--color-white);
+              box-shadow: 0 4px 12px rgba(11, 11, 11, 0.2);
+
+              &:hover {
+                background: rgba(11, 11, 11, 0.9);
+                transform: translateY(-2px);
+                box-shadow: 0 6px 20px rgba(11, 11, 11, 0.3);
+              }
+            }
+
+            .continue-shopping-btn {
+              background: transparent;
+              color: var(--color-black);
+              border: 2px solid rgba(168, 168, 168, 0.3);
+
+              &:hover {
+                background: rgba(11, 11, 11, 0.05);
+                border-color: var(--color-black);
+                transform: translateY(-2px);
+              }
+            }
+          }
+        }
+      }
+
+      .success-footer {
+        margin-top: 2rem;
+        padding-top: 1.5rem;
+        border-top: 1px solid rgba(168, 168, 168, 0.2);
+        animation: slideUp 0.8s ease-out 1s both;
+
+        p {
+          font-family: var(--font-body);
+          font-size: 0.9rem;
+          color: var(--color-gray);
+          margin: 0;
+
+          .support-link {
+            color: var(--color-black);
+            cursor: pointer;
+            font-weight: 600;
+            text-decoration: underline;
+            text-decoration-thickness: 2px;
+            text-underline-offset: 3px;
+            transition: all 0.3s ease;
+
+            &:hover {
+              color: #4caf50;
+              text-decoration-color: #4caf50;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  @keyframes checkmarkPop {
+    0% {
+      transform: scale(0);
+      opacity: 0;
+    }
+    50% {
+      transform: scale(1.2);
+    }
+    100% {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+
+  @keyframes ripple {
+    0% {
+      transform: translate(-50%, -50%) scale(0);
+      opacity: 1;
+    }
+    100% {
+      transform: translate(-50%, -50%) scale(1.5);
+      opacity: 0;
+    }
+  }
+
+  @keyframes slideUp {
+    0% {
+      transform: translateY(30px);
+      opacity: 0;
+    }
+    100% {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 0.8; }
+    50% { opacity: 1; }
+  }
+
+  @media (max-width: 768px) {
+    padding: 1rem 0;
+
+    .container {
+      padding: 0 1rem;
+
+      .success-card {
+        padding: 2rem 1.5rem;
+
+        .success-animation .checkmark-wrapper .checkmark-icon {
+          font-size: 4rem;
+        }
+
+        .success-content {
+          h1 {
+            font-size: 2rem;
+          }
+
+          .success-message {
+            font-size: 1rem;
+          }
+
+          .order-details {
+            padding: 1rem;
+
+            .detail-item {
+              flex-direction: column;
+              text-align: center;
+              gap: 0.5rem;
+            }
+          }
+
+          .redirect-section .action-buttons {
+            flex-direction: column;
+
+            .view-orders-btn, .continue-shopping-btn {
+              width: 100%;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  @media (max-width: 480px) {
+    .container .success-card {
+      padding: 1.5rem 1rem;
+      border-radius: 16px;
+
+      .success-animation .checkmark-wrapper .checkmark-icon {
+        font-size: 3.5rem;
+      }
+
+      .success-content {
+        h1 {
+          font-size: 1.75rem;
+        }
+
+        .redirect-section .countdown-display {
+          flex-direction: column;
+          gap: 0.75rem;
+          text-align: center;
+        }
+      }
+    }
+  }
+}

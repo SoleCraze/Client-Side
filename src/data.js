@@ -3,8 +3,8 @@ import img2 from './assest/2.png';
 import img3 from './assest/3.png';
 import img4 from './assest/33.png';
 import img5 from './assest/44.png';
-import menJpg from './assest/men.jpg'
-import womenJpg from './assest/women.jpg'
+// import menJpg from './assest/men.jpg'
+// import womenJpg from './assest/women.jpg'
 import kidJpg from './assest/kid.jpg'
 
 export const sliderItems = [
@@ -31,26 +31,26 @@ export const sliderItems = [
     },
   ];
 
-  export const categories = [
-    {
-      id: 1,
-      img: menJpg,
-      title: "Men Collection",
-      cat: "men"
-    },
-    {
-      id: 2,
-      img: womenJpg,
-      title: "Women Collection",
-      cat: "women"
-    },
-    {
-      id: 3,
-      img: kidJpg,
-      title: "Kid Collection",
-      cat: "kid"
-    },
-  ];
+  // export const categories = [
+  //   {
+  //     id: 1,
+  //     img: menJpg,
+  //     title: "Men Collection",
+  //     cat: "men"
+  //   },
+  //   {
+  //     id: 2,
+  //     img: womenJpg,
+  //     title: "Women Collection",
+  //     cat: "women"
+  //   },
+  //   {
+  //     id: 3,
+  //     img: kidJpg,
+  //     title: "Kid Collection",
+  //     cat: "kid"
+  //   },
+  // ];
 
   export const popularProducts = [
     {

@@ -11,7 +11,7 @@ import {
 import Announcement from './components/announcement/announcement';
 import { createBrowserRouter, Outlet, RouterProvider } from "react-router-dom";
 import Navbar from './components/navbar/navbar';
-import Footer from './components/footer/footer';
+import Footer from './components/footer/footer_new';
 //import Success from './pages/success';
 import Pay from './pages/pay/pay';
 import Success from './pages/success/success';
@@ -25,7 +25,6 @@ function App() {
     return (
       <div className="app">
         <QueryClientProvider client={queryClient}>
-        <Announcement />
         <Navbar />
         <Outlet />
         <Footer />

@@ -1,16 +1,19 @@
 import React from "react";
-import Categories from "../../components/categories/categories";
 import Newsletter from "../../components/newsletter/newsletter";
 import Products from "../../components/products/products";
-import Slider from "../../components/slider/slider";
+import HeroSection from "../../components/hero/hero";
+import Brands from "../../components/brands/brands";
+import AboutSection from "../../components/aboutSection/aboutSection";
+import Testimonials from "../../components/testimonials/testimonials";
 
 const Home = () => {
   return (
     <div>
-      <Slider />
-      <Categories />
+      <HeroSection />
+      <Brands />
       <Products/>
-      <Newsletter/>
+      <AboutSection />
+      <Testimonials/>
     </div>
   );
 };

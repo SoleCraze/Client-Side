@@ -16,11 +16,38 @@ const Products = ({ sizeFilter, colorFilter, brandFilter, sortOption }) => {
   });
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return (
+      <div className="products-loading">
+        <div className="container">
+          <div className="loading-grid">
+            {[...Array(8)].map((_, index) => (
+              <div key={index} className="loading-card">
+                <div className="loading-image"></div>
+                <div className="loading-content">
+                  <div className="loading-brand"></div>
+                  <div className="loading-title"></div>
+                  <div className="loading-price"></div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    );
   }
 
   if (error) {
-    return <div>Error loading products: {error.message}</div>;
+    return (
+      <div className="products-error">
+        <div className="container">
+          <div className="error-content">
+            <h3>Unable to Load Products</h3>
+            <p>We're experiencing technical difficulties. Please try again later.</p>
+            <button onClick={() => window.location.reload()}>Retry</button>
+          </div>
+        </div>
+      </div>
+    );
   }
 
   // Filtering logic
@@ -56,11 +83,43 @@ const Products = ({ sizeFilter, colorFilter, brandFilter, sortOption }) => {
 
   return (
     <div className="products">
-      {Array.isArray(filteredProducts) && (
+      {Array.isArray(filteredProducts) && filteredProducts.length > 0 ? (
         <div className="container">
-          {filteredProducts.map((item) => (
-            <Product item={item} key={item._id} />
-          ))}
+          <div className="products-header">
+            <div className="section-badge">
+              <span>Featured Products</span>
+            </div>
+            <div className="results-info">
+              <div className="results-filters">
+                {sizeFilter && <span className="filter-tag">Size: {sizeFilter}</span>}
+                {colorFilter && <span className="filter-tag">Color: {colorFilter}</span>}
+                {brandFilter && <span className="filter-tag">Brand: {brandFilter}</span>}
+              </div>
+            </div>
+          </div>
+          
+          <div className="products-grid">
+            {filteredProducts.map((item, index) => (
+              <div 
+                key={item._id} 
+                className="product-wrapper"
+                style={{ 
+                  animationDelay: `${index * 0.1}s` 
+                }}
+              >
+                <Product item={item} />
+              </div>
+            ))}
+          </div>
+        </div>
+      ) : (
+        <div className="container">
+          <div className="no-products">
+            <div className="no-products-content">
+              <h3>No Products Found</h3>
+              <p>We couldn't find any products matching your criteria. Try adjusting your filters.</p>
+            </div>
+          </div>
         </div>
       )}
     </div>

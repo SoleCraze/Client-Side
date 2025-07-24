@@ -1,5 +1,10 @@
 import Search from '@mui/icons-material/Search';
-import ShoppingCartOutlined from '@mui/icons-material/ShoppingCartOutlined';
+import ShoppingBagOutlinedIcon from '@mui/icons-material/ShoppingBagOutlined';
+import MenuIcon from '@mui/icons-material/Menu';
+import CloseIcon from '@mui/icons-material/Close';
+import PersonIcon from '@mui/icons-material/Person';
+import ShoppingBagIcon from '@mui/icons-material/ShoppingBag';
+import LogoutIcon from '@mui/icons-material/Logout';
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "./navbar.scss";
@@ -11,15 +16,63 @@ const Navbar = () => {
   const currentUser = JSON.parse(localStorage.getItem("currentUser"));
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [userDropdownOpen, setUserDropdownOpen] = useState(false);
 
   const handleLogout = async () => {
     try {
       await newRequest.post("/auth/logout");
       localStorage.setItem("currentUser", null);
       navigate("/");
+      setMobileMenuOpen(false);
+      setUserDropdownOpen(false);
     } catch (err) {
       console.log(err);
     }
+  };
+
+  // Close mobile menu when clicking outside or navigating
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth > 768) {
+        setMobileMenuOpen(false);
+      }
+    };
+
+    const handleClickOutside = (event) => {
+      if (!event.target.closest('.navbar')) {
+        setMobileMenuOpen(false);
+        setUserDropdownOpen(false);
+        setOpen(false);
+      }
+    };
+
+    window.addEventListener('resize', handleResize);
+    document.addEventListener('click', handleClickOutside);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+      document.removeEventListener('click', handleClickOutside);
+    };
+  }, []);
+
+  const toggleMobileMenu = (e) => {
+    e.stopPropagation();
+    setMobileMenuOpen(!mobileMenuOpen);
+    setUserDropdownOpen(false);
+    setOpen(false);
+  };
+
+  const toggleUserDropdown = (e) => {
+    e.stopPropagation();
+    setUserDropdownOpen(!userDropdownOpen);
+    setOpen(!open);
+  };
+
+  const closeMobileMenu = () => {
+    setMobileMenuOpen(false);
+    setUserDropdownOpen(false);
+    setOpen(false);
   };
 
   const { data: cartData, isLoading, isError } = useQuery({
@@ -36,60 +89,171 @@ const Navbar = () => {
   const cartQuantity = cartData?.products.reduce((total, product) => total + product.quantity, 0) || 0;
 
   return (
-    <div className="navbar">
-      <div className="container">
-        <div className="wrapper">
-          <div className="left">
-            <span>EN</span>
-            <div className="searchContainer">
-              <input type="text" placeholder='Search'/>
-              <Search/>
-            </div>
-          </div>
-          <div className="center">
-            <Link to={"/"} className='link'>
-              <h1>Sole Craze</h1>
-            </Link>
-          </div>
-          <div className="right">
-            {!currentUser && <div className="menuItem">
-              <Link className='link' to="/register">REGISTER</Link>
-            </div>}
-            {!currentUser && <div className="menuItem">
-              <Link className='link' to="/login">SIGN IN</Link>
-            </div> }
-            <div className="menuItem">
-              <Link className='link' to="/cart">
-                <div className="circle" style={{display: !cartQuantity ? "none" : "flex"}}>
-                  <span>{cartQuantity}</span>
-                </div>
-                <ShoppingCartOutlined/>
+    <>
+      <div className="navbar">
+        <div className="container">
+          <div className="wrapper">
+            <div className="left">
+              <Link to={"/"} className='link brand-logo' onClick={closeMobileMenu}>
+                <span className="brand-text">SoleCraze</span>
               </Link>
             </div>
-            <div className="menuItem">
-              <div className="user" onClick={() => setOpen(!open)}>
-                <img src="/img/noavatar.jpg" alt="" />
-                <span>{currentUser?.firstName}</span>
-                {open && (
-                <div className="options">
-                      <Link className="link" to="/myAccount">
-                        My Account
-                      </Link>
-                      <Link className="link" to="/orders">
-                        My Orders
-                      </Link>
-                      <Link className="link" onClick={handleLogout}>
-                        Logout
-                      </Link>
-                </div>
-                )}
-              </div>
+            
+            <div className="center">
+              <nav className="nav-links desktop-nav">
+                <Link to={"/men"} className='link nav-item'>
+                  <span>Men</span>
+                </Link>
+                <Link to={"/women"} className='link nav-item'>
+                  <span>Women</span>
+                </Link>
+                <Link to={"/kids"} className='link nav-item'>
+                  <span>Kids</span>
+                </Link>
+              </nav>
             </div>
             
+            <div className="right">
+              <div className="desktop-actions">
+                <div className="auth-section">
+                  {!currentUser && (
+                    <>
+                      <div className="menuItem">
+                        <Link className='link auth-link' to="/register">
+                          Register
+                        </Link>
+                      </div>
+                      <div className="menuItem">
+                        <Link className='link auth-link primary' to="/login">
+                          Sign In
+                        </Link>
+                      </div>
+                    </>
+                  )}
+                </div>
+                
+                <div className="actions-section">
+                  <div className="menuItem cart-item">
+                    <Link className='link' to="/cart">
+                      {cartQuantity > 0 && (
+                        <div className="cart-badge">
+                          <span>{cartQuantity}</span>
+                        </div>
+                      )}
+                      <ShoppingBagOutlinedIcon className="cart-icon"/>
+                    </Link>
+                  </div>
+                  
+                  {currentUser && (
+                    <div className="menuItem user-menu">
+                      <div className="user" onClick={toggleUserDropdown}>
+                        <img src="/img/noavatar.jpg" alt="User Avatar" />
+                        <span className="user-name">{currentUser?.firstName}</span>
+                        {open && (
+                          <div className="dropdown-options">
+                            <Link className="link dropdown-item" to="/myAccount">
+                              <PersonIcon className="dropdown-icon" />
+                              <span>My Account</span>
+                            </Link>
+                            <Link className="link dropdown-item" to="/orders">
+                              <ShoppingBagIcon className="dropdown-icon" />
+                              <span>My Orders</span>
+                            </Link>
+                            <div className="link dropdown-item logout" onClick={handleLogout}>
+                              <LogoutIcon className="dropdown-icon" />
+                              <span>Logout</span>
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              {/* Mobile Cart and Hamburger */}
+              <div className="mobile-actions">
+                <div className="mobile-cart">
+                  <Link className='link' to="/cart" onClick={closeMobileMenu}>
+                    {cartQuantity > 0 && (
+                      <div className="cart-badge">
+                        <span>{cartQuantity}</span>
+                      </div>
+                    )}
+                    <ShoppingBagOutlinedIcon className="cart-icon"/>
+                  </Link>
+                </div>
+                
+                <button 
+                  className={`hamburger-btn ${mobileMenuOpen ? 'active' : ''}`}
+                  onClick={toggleMobileMenu}
+                  aria-label="Toggle mobile menu"
+                >
+                  {mobileMenuOpen ? <CloseIcon /> : <MenuIcon />}
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+
+      {/* Mobile Menu Overlay - Outside navbar container */}
+      <div className={`mobile-menu-overlay ${mobileMenuOpen ? 'active' : ''}`}>
+        <div className="mobile-menu">
+          {/* Navigation Links */}
+          <div className="mobile-nav-section">
+            <h3>Categories</h3>
+            <Link to={"/men"} className='mobile-nav-link' onClick={closeMobileMenu}>
+              <span>Men</span>
+            </Link>
+            <Link to={"/women"} className='mobile-nav-link' onClick={closeMobileMenu}>
+              <span>Women</span>
+            </Link>
+            <Link to={"/kids"} className='mobile-nav-link' onClick={closeMobileMenu}>
+              <span>Kids</span>
+            </Link>
+          </div>
+
+          {/* User Section */}
+          {currentUser ? (
+            <div className="mobile-user-section">
+              <div className="mobile-user-info">
+                <img src="/img/noavatar.jpg" alt="User Avatar" />
+                <div className="user-details">
+                  <span className="user-name">{currentUser?.firstName} {currentUser?.lastName}</span>
+                  <span className="user-email">{currentUser?.email}</span>
+                </div>
+              </div>
+              
+              <div className="mobile-user-links">
+                <Link to={"/myAccount"} className='mobile-nav-link' onClick={closeMobileMenu}>
+                  <PersonIcon className="mobile-icon" />
+                  <span>My Account</span>
+                </Link>
+                <Link to={"/orders"} className='mobile-nav-link' onClick={closeMobileMenu}>
+                  <ShoppingBagIcon className="mobile-icon" />
+                  <span>My Orders</span>
+                </Link>
+                <button className='mobile-nav-link logout-btn' onClick={handleLogout}>
+                  <LogoutIcon className="mobile-icon" />
+                  <span>Logout</span>
+                </button>
+              </div>
+            </div>
+          ) : (
+            <div className="mobile-auth-section">
+              <h3>Account</h3>
+              <Link to={"/register"} className='mobile-nav-link' onClick={closeMobileMenu}>
+                <span>Register</span>
+              </Link>
+              <Link to={"/login"} className='mobile-nav-link primary' onClick={closeMobileMenu}>
+                <span>Sign In</span>
+              </Link>
+            </div>
+          )}
+        </div>
+      </div>
+    </>
   );
 };
 

@@ -1,5 +1,9 @@
 import Add from '@mui/icons-material/Add';
 import Remove from '@mui/icons-material/Remove';
+import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
+import ShoppingBagOutlinedIcon from '@mui/icons-material/ShoppingBagOutlined';
+import LocalShippingOutlinedIcon from '@mui/icons-material/LocalShippingOutlined';
+import SecurityIcon from '@mui/icons-material/Security';
 import "./cart.scss";
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import newRequest from '../../utils/newRequest';
@@ -114,74 +118,158 @@ const Cart = () => {
   console.log(data)
   const subTotal = products.reduce((total, product) => total + (product.quantity * product.price), 0) || 0;
 
+  if (isLoading) {
+    return (
+      <div className="cart">
+        <div className="container">
+          <div className="loading-state">
+            <div className="loading-spinner"></div>
+            <p>Loading your cart...</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="cart">
+        <div className="container">
+          <div className="error-state">
+            <p>Unable to load cart. Please try again.</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="cart">
       <div className="container">
-        <div className="wrapper">
-          <h1>YOUR CART</h1>
-          <div className="top">
-            <Link className="link" to="/products">
-              <button>CONTINUE SHOPPING</button>
-            </Link>
+        <div className="cart-header">
+          <div className="title-section">
+            <ShoppingBagOutlinedIcon className="cart-icon" />
+            <h1>Shopping Cart</h1>
           </div>
-          <div className="bottom">
-            <div className="info">
-              { products.map((product) => (
-                <div className="product" key={product.id}>
-                <div className="productDetail">
-                  <img src={product.img} />
-                  <div className="details">
-                    <span><b>{product.title}</b> </span>
-                    <span>{product.color}</span>
-                    <span>EU {product.size}</span>
-                    <span>$ {product.price}</span>
-                  </div>
-                </div>
-                <div className="priceDetail">
-                  <div className="productAmountContainer">
-                    <div className="quantityContainer">
-                      <div className="add" onClick={() => handleQuantityAdd(product.id, product.quantity)}>
-                        <Add/>
-                      </div>
-                      <div className="productAmount">
-                        <span>{product.quantity}</span>
-                      </div>
-                      <div className="minus" onClick={() => handleQuantityRemove(product.id, product.quantity)}>
-                        <Remove/>
-                      </div>
-                    </div>
-                    <span className='removeProduct' onClick={() => handleRemoveProduct(product.id)}>Remove</span>
-                  </div>
-                  <div className="productPrice">
-                    <span>$ {product.price * product.quantity}</span>
-                  </div>
-                </div>
-                
-                </div>
-                
-              ))}
-              <hr />
-            </div>
-            <div className="summary">
-              <h1>ORDER SUMMARY</h1>
-              <div className="summaryItem">
-                <span>Subtotal</span>
-                <span>$ {subTotal}</span>
-              </div>
-              <div className="summaryItem">
-                <span>Estimated Shipping</span>
-                <span>$ {data ? 20 : 0}</span>
-              </div>
-              <div className="summaryItemTotal">
-                <span>Total</span>
-                <span>$ {data ? subTotal + 20 : 0}</span>
-              </div>
-              <Link to={data && `/pay/${data._id}`}>
-                <button>CHECKOUT NOW</button>
-              </Link>
-            </div>
+          <div className="item-count">
+            {products.length} {products.length === 1 ? 'item' : 'items'}
           </div>
         </div>
+
+        <div className="cart-actions">
+          <Link className="continue-shopping-link" to="/products">
+            <button className="continue-shopping-btn">
+              Continue Shopping
+            </button>
+          </Link>
+        </div>
+
+        {products.length === 0 ? (
+          <div className="empty-cart">
+            <ShoppingBagOutlinedIcon className="empty-icon" />
+            <h2>Your cart is empty</h2>
+            <p>Discover our latest sneaker collections and find your perfect pair</p>
+            <Link to="/products">
+              <button className="shop-now-btn">Shop Now</button>
+            </Link>
+          </div>
+        ) : (
+          <div className="cart-content">
+            <div className="cart-items">
+              {products.map((product) => (
+                <div className="cart-item" key={product.id}>
+                  <div className="product-image">
+                    <img src={product.img} alt={product.title} />
+                  </div>
+                  
+                  <div className="product-details">
+                    <h3 className="product-title">{product.title}</h3>
+                    <div className="product-specs">
+                      <span className="color-spec">Color: {product.color}</span>
+                      <span className="size-spec">Size: EU {product.size}</span>
+                    </div>
+                    <div className="unit-price">
+                      ${product.price}
+                    </div>
+                  </div>
+
+                  <div className="quantity-controls">
+                    <div className="quantity-selector">
+                      <button 
+                        className="quantity-btn decrease"
+                        onClick={() => handleQuantityRemove(product.id, product.quantity)}
+                        disabled={product.quantity <= 1}
+                      >
+                        <Remove />
+                      </button>
+                      <span className="quantity-display">{product.quantity}</span>
+                      <button 
+                        className="quantity-btn increase"
+                        onClick={() => handleQuantityAdd(product.id, product.quantity)}
+                      >
+                        <Add />
+                      </button>
+                    </div>
+                    
+                    <button 
+                      className="remove-item-btn"
+                      onClick={() => handleRemoveProduct(product.id)}
+                      disabled={mutation.isLoading}
+                    >
+                      <DeleteOutlineIcon />
+                      <span>Remove</span>
+                    </button>
+                  </div>
+
+                  <div className="item-total">
+                    <span className="total-price">
+                      ${(product.price * product.quantity).toFixed(2)}
+                    </span>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <div className="order-summary">
+              <div className="summary-card">
+                <h2>Order Summary</h2>
+                
+                <div className="summary-details">
+                  <div className="summary-row">
+                    <span>Subtotal ({products.length} {products.length === 1 ? 'item' : 'items'})</span>
+                    <span>${subTotal.toFixed(2)}</span>
+                  </div>
+                  
+                  <div className="summary-row shipping">
+                    <div className="shipping-info">
+                      <LocalShippingOutlinedIcon className="shipping-icon" />
+                      <span>Estimated Shipping</span>
+                    </div>
+                    <span>${data ? '20.00' : '0.00'}</span>
+                  </div>
+                  
+                  <div className="summary-divider"></div>
+                  
+                  <div className="summary-row total">
+                    <span>Total</span>
+                    <span>${data ? (subTotal + 20).toFixed(2) : '0.00'}</span>
+                  </div>
+                </div>
+
+                <div className="security-badge">
+                  <SecurityIcon className="security-icon" />
+                  <span>Secure checkout guaranteed</span>
+                </div>
+
+                <Link to={data && `/pay/${data._id}`}>
+                  <button className="checkout-btn" disabled={!data}>
+                    <span>Proceed to Checkout</span>
+                  </button>
+                </Link>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

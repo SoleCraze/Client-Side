@@ -1,60 +1,410 @@
-.productList{
-    .container{
-        h1{
-            margin-left: 40px;
-            margin-top: 7px;
-            margin-bottom: 20px;
-            font-size: 25px;
+.productList-page {
+  background: var(--color-white);
+  min-height: 100vh;
+}
+
+.productList {
+  background: linear-gradient(135deg, var(--color-black) 0%, rgba(11, 11, 11, 0.95) 100%);
+  color: var(--color-white);
+  padding: 40px 0 60px;
+
+  .container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 20px;
+
+    .page-header {
+      margin-bottom: 40px;
+
+      .breadcrumb {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 20px;
+        font-family: var(--font-body);
+        font-size: 0.9rem;
+
+        span {
+          color: var(--color-gray);
+          transition: color 0.3s ease;
+
+          &.current {
+            color: var(--color-white);
+            font-weight: 500;
+          }
+
+          &:not(.separator):not(.current) {
+            cursor: pointer;
+            
+            &:hover {
+              color: var(--color-white);
+            }
+          }
         }
 
-        span{
-            margin: 20px 0 0px 40px;
-            color: rgb(147, 143, 143);
+        .separator {
+          color: rgba(255, 255, 255, 0.3);
+          font-size: 0.8rem;
+        }
+      }
+
+      .header-content {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+        gap: 40px;
+
+        @media (max-width: 768px) {
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 20px;
         }
 
-        .filterContainer{
+        .title-section {
+          h1 {
+            font-family: var(--font-heading);
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--color-white);
+            margin-bottom: 10px;
+            letter-spacing: -0.02em;
+
+            @media (max-width: 768px) {
+              font-size: 2.2rem;
+            }
+          }
+
+          p {
+            font-family: var(--font-body);
+            font-size: 1.1rem;
+            color: var(--color-gray);
+            font-weight: 300;
+            line-height: 1.5;
+          }
+        }
+
+        .view-controls {
+          display: flex;
+          gap: 8px;
+          background: rgba(255, 255, 255, 0.05);
+          border-radius: 12px;
+          padding: 4px;
+          border: 1px solid rgba(255, 255, 255, 0.1);
+
+          .view-btn {
+            padding: 12px;
+            border: none;
+            background: transparent;
+            color: var(--color-gray);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            svg {
+              font-size: 20px;
+            }
+
+            &:hover {
+              color: var(--color-white);
+              background: rgba(255, 255, 255, 0.05);
+            }
+
+            &.active {
+              background: rgba(255, 255, 255, 0.1);
+              color: var(--color-white);
+            }
+          }
+        }
+      }
+    }
+
+    .controls-section {
+      .controls-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+        padding: 25px 30px;
+        background: rgba(255, 255, 255, 0.02);
+        border-radius: 16px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+
+        @media (max-width: 768px) {
+          flex-direction: column;
+          gap: 20px;
+          align-items: stretch;
+        }
+
+        .filter-toggle {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          padding: 12px 20px;
+          background: rgba(255, 255, 255, 0.05);
+          border: 1px solid rgba(255, 255, 255, 0.1);
+          border-radius: 12px;
+          color: var(--color-white);
+          font-family: var(--font-body);
+          font-size: 0.95rem;
+          font-weight: 500;
+          cursor: pointer;
+          transition: all 0.3s ease;
+          position: relative;
+
+          svg {
+            font-size: 20px;
+          }
+
+          .filter-badge {
+            background: linear-gradient(135deg, var(--color-white), var(--color-gray));
+            color: var(--color-black);
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 2px 6px;
+            border-radius: 10px;
+            min-width: 16px;
+            text-align: center;
+          }
+
+          &:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(255, 255, 255, 0.2);
+            transform: translateY(-1px);
+          }
+        }
+
+        .results-info {
+          span {
+            font-family: var(--font-body);
+            color: var(--color-gray);
+            font-size: 0.95rem;
+          }
+        }
+
+        .sort-section {
+          display: flex;
+          align-items: center;
+          gap: 12px;
+
+          .sort-icon {
+            color: var(--color-gray);
+            font-size: 20px;
+          }
+
+          .sort-select {
+            padding: 12px 16px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            color: var(--color-white);
+            font-family: var(--font-body);
+            font-size: 0.95rem;
+            min-width: 180px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+
+            &:focus {
+              outline: none;
+              border-color: var(--color-gray);
+              background: rgba(255, 255, 255, 0.08);
+            }
+
+            option {
+              background: var(--color-black);
+              color: var(--color-white);
+              padding: 10px;
+            }
+          }
+        }
+      }
+
+      .filter-panel {
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.4s ease, opacity 0.3s ease;
+        opacity: 0;
+
+        &.active {
+          max-height: 500px;
+          opacity: 1;
+          margin-bottom: 30px;
+        }
+
+        .filter-content {
+          background: rgba(255, 255, 255, 0.02);
+          border-radius: 16px;
+          border: 1px solid rgba(255, 255, 255, 0.1);
+          padding: 30px;
+          backdrop-filter: blur(10px);
+
+          .filter-header {
             display: flex;
             justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 
-            .filter_products{
-                margin: 20px;
-
-                span{
-                    font-size: 20px;
-                    font-weight: 500;
-                    margin-right: 20px;
-                    color: black;
-                }
-
-                select{
-                    padding: 10px;
-                    margin-right: 20px;
-                }
-
-                option{
-
-                }
+            h3 {
+              font-family: var(--font-heading);
+              font-size: 1.4rem;
+              color: var(--color-white);
+              font-weight: 600;
             }
 
-            .sort_products{
-                margin: 20px;
+            .clear-filters {
+              background: none;
+              border: 1px solid rgba(255, 255, 255, 0.2);
+              color: var(--color-gray);
+              padding: 8px 16px;
+              border-radius: 8px;
+              font-family: var(--font-body);
+              font-size: 0.9rem;
+              cursor: pointer;
+              transition: all 0.3s ease;
 
-                span{
-                    font-size: 20px;
-                    font-weight: 500;
-                    margin-right: 20px;
-                    color: black;
-                }
-
-                select{
-                    padding: 10px;
-                    margin-right: 20px;
-                }
-
-                option{
-
-                }
+              &:hover {
+                color: var(--color-white);
+                border-color: rgba(255, 255, 255, 0.4);
+              }
             }
+          }
+
+          .filter-groups {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+
+            @media (max-width: 768px) {
+              grid-template-columns: 1fr;
+              gap: 20px;
+            }
+
+            .filter-group {
+              .filter-label {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                font-family: var(--font-body);
+                font-size: 0.95rem;
+                font-weight: 500;
+                color: var(--color-white);
+                margin-bottom: 12px;
+
+                svg {
+                  font-size: 18px;
+                  color: var(--color-gray);
+                }
+
+                .color-icon {
+                  width: 18px;
+                  height: 18px;
+                  border-radius: 50%;
+                  background: linear-gradient(135deg, var(--color-white), var(--color-gray));
+                }
+
+                .brand-icon {
+                  width: 18px;
+                  height: 18px;
+                  border-radius: 4px;
+                  background: linear-gradient(135deg, var(--color-white), var(--color-gray));
+                  color: var(--color-black);
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                  font-size: 12px;
+                  font-weight: 600;
+                }
+
+                .price-icon {
+                  width: 18px;
+                  height: 18px;
+                  border-radius: 50%;
+                  background: linear-gradient(135deg, var(--color-white), var(--color-gray));
+                  color: var(--color-black);
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                  font-size: 12px;
+                  font-weight: 600;
+                }
+              }
+
+              .filter-select {
+                width: 100%;
+                padding: 14px 16px;
+                background: rgba(255, 255, 255, 0.05);
+                border: 1px solid rgba(255, 255, 255, 0.1);
+                border-radius: 12px;
+                color: var(--color-white);
+                font-family: var(--font-body);
+                font-size: 0.95rem;
+                cursor: pointer;
+                transition: all 0.3s ease;
+
+                &:focus {
+                  outline: none;
+                  border-color: var(--color-gray);
+                  background: rgba(255, 255, 255, 0.08);
+                }
+
+                option {
+                  background: var(--color-black);
+                  color: var(--color-white);
+                  padding: 12px;
+                }
+              }
+
+              .price-range {
+                .price-slider {
+                  width: 100%;
+                  height: 6px;
+                  border-radius: 3px;
+                  background: rgba(255, 255, 255, 0.1);
+                  outline: none;
+                  cursor: pointer;
+                  margin-bottom: 12px;
+
+                  &::-webkit-slider-thumb {
+                    appearance: none;
+                    width: 20px;
+                    height: 20px;
+                    border-radius: 50%;
+                    background: linear-gradient(135deg, var(--color-white), var(--color-gray));
+                    cursor: pointer;
+                    border: 2px solid var(--color-black);
+                  }
+
+                  &::-moz-range-thumb {
+                    width: 20px;
+                    height: 20px;
+                    border-radius: 50%;
+                    background: linear-gradient(135deg, var(--color-white), var(--color-gray));
+                    cursor: pointer;
+                    border: 2px solid var(--color-black);
+                  }
+                }
+
+                .price-display {
+                  display: flex;
+                  justify-content: space-between;
+                  font-family: var(--font-body);
+                  font-size: 0.9rem;
+                  color: var(--color-gray);
+
+                  span {
+                    font-weight: 500;
+                  }
+                }
+              }
+            }
+          }
         }
+      }
     }
+  }
 }
