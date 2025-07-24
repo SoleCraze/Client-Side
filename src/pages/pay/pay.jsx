@@ -21,12 +21,13 @@ const Pay = () => {
                     `orders/create-payment-intent/${id}`
                 );
                 setClientSecret(res.data.clientSecret);
+                // Delete cart only after successful payment intent creation
+                mutation.mutate(id);
             } catch (err) {
                 console.log(err);
             }
         };
         makeRequest();
-        mutation.mutate(id)
     }, []);
 
     const appearance = {
